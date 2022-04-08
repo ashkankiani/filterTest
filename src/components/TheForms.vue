@@ -32,7 +32,7 @@ export default {
         {
           status: false,
           name: "کسب و کارهای بومی",
-          enName: "indigenousBusinessesSeller"
+          enName: "businessesSeller"
         }
       ],
       sellerType: [],
@@ -225,15 +225,27 @@ export default {
       });
 
       const paramsProductName = this.productName.length > 0 ? this.productName : undefined;
-      const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString() : undefined;
-      // const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString().replaceAll(",", "--") : undefined;
+      // const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString() : undefined;
+      const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString().replaceAll(",", "--") : undefined;
       const paramsProductStatus = this.productStatus === true ? this.productStatus : undefined;
       const paramsSellerTypeActiveSelected = this.sellerTypeActiveSelected.length > 0 && this.sellerTypeActiveSelected !== "All" ? this.sellerTypeActiveSelected : undefined;
       const paramsCategorySelected = this.categorySelected.length > 0 ? this.categorySelected : undefined;
-      const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString() : undefined;
-      // const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString().replaceAll(",", "--") : undefined;
+      // const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString() : undefined;
+      const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString().replaceAll(",", "--") : undefined;
       const paramsPriceRang = this.categorySelected.length > 0 && this.showPrice ? rangeValue : undefined;
 
+
+
+
+      const query = {
+        productName: paramsProductName,
+        sellerType: paramsSellerType,
+        productStatus: paramsProductStatus,
+        sellerTypeActiveSelected: paramsSellerTypeActiveSelected,
+        categorySelected: paramsCategorySelected,
+        brandSelected: paramsBrandSelected,
+        priceRang: paramsPriceRang
+      };
 
       // this.$router.replace({
       //   query: {
@@ -246,13 +258,23 @@ export default {
       //     priceRang: paramsPriceRang
       //   }
       // });
-
+      // this.addParamsToLocation(query);
       return this.$route.query;
-    },
+    }
   },
   methods: {
-    addParamsToLocation() {
-      let params = { "productName": "asdasd", "sellerType": "selectedSeller", "productStatus": "true", "sellerTypeActiveSelected": "digiKalaSeller" }
+    asdasdasd(){
+      queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'});
+      console.log(queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'}))
+    },
+    addParamsToLocation(params) {
+
+      Object.keys(params).forEach(key => {
+        if (params[key] === undefined) {
+          delete params[key];
+        }
+      });
+
       history.pushState(
         {},
         null,
@@ -261,10 +283,10 @@ export default {
         Object.keys(params)
           .map(key => {
             return (
-              encodeURIComponent(key) + "=" + encodeURIComponent(params[key])
+              encodeURIComponent(key) + "~" + encodeURIComponent(params[key])
             );
           })
-          .join("&")
+          .join("+")
       );
     },
     showBrand(index) {
@@ -355,7 +377,7 @@ export default {
 
 <template>
   <div class="container theForms">
-
+    <h1 @click="asdasdasd">asdasdasd</h1>
     <div class="row">
       <div class="col-12 mb-3" v-if="Object.keys(myQuery).length !== 0 && myQuery.constructor === Object">
         <div class="alert alert-success text-end" role="alert" dir="ltr">
