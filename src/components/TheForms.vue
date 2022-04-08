@@ -1,4 +1,5 @@
 <script>
+import queryString from "query-string";
 import Slider from "@vueform/slider";
 import slotCard from "@/components/slot/slotCard.vue";
 import slotCardHeader from "@/components/slot/slotCardHeader.vue";
@@ -123,12 +124,93 @@ export default {
           priceRang: [0, 100]
         }
       ],
+      showPrice: false,
       categorySelected: "",
       brandSelected: [],
-      categoryDetail: false,
-      fullQuery: "http://localhost:3000/q?"
+      categoryDetail: false
     };
   },
+  // watch: {
+  //   productName: {
+  //     immediate: true,
+  //     handler() {
+  //       this.$router.push({
+  //         path: "/",
+  //         query: Object.assign({}, this.$route.query, { productName: this.productName.length > 0 ? this.productName : undefined })
+  //       });
+  //     }
+  //   },
+  //   sellerType: {
+  //     immediate: true,
+  //     handler() {
+  //       this.$router.push({
+  //         path: "/",
+  //         query: Object.assign({}, this.$route.query, { sellerType: this.sellerType.length > 0 ? this.sellerType.toString() : undefined })
+  //       });
+  //     }
+  //   },
+  //   productStatus: {
+  //     immediate: true,
+  //     handler(newVal) {
+  //       if (newVal === false) {
+  //         this.$router.push({
+  //           path: "/",
+  //           query: Object.assign({}, this.$route.query, {
+  //             productStatus: undefined
+  //           }, {
+  //             sellerTypeActiveSelected: undefined
+  //           })
+  //         });
+  //       } else {
+  //         this.$router.push({
+  //           path: "/",
+  //           query: Object.assign({}, this.$route.query, { productStatus: this.productStatus === true ? this.productStatus : undefined })
+  //         });
+  //       }
+  //     }
+  //   },
+  //   sellerTypeActiveSelected: {
+  //     immediate: true,
+  //     handler() {
+  //       this.$router.push({
+  //         path: "/",
+  //         query: Object.assign({}, this.$route.query, { sellerTypeActiveSelected: this.sellerTypeActiveSelected.length > 0 && this.sellerTypeActiveSelected !== "All" ? this.sellerTypeActiveSelected : undefined })
+  //       });
+  //     }
+  //   },
+  //   categorySelected: {
+  //     immediate: true,
+  //     handler() {
+  //       console.log(this.categorySelected);
+  //       this.$router.push({
+  //         path: "/",
+  //         query: { categorySelected: this.categorySelected.length > 0 ? this.categorySelected : undefined }
+  //       });
+  //     }
+  //   },
+  //   brandSelected: {
+  //     immediate: true,
+  //     handler() {
+  //       this.$router.push({
+  //         path: "/",
+  //         query: Object.assign({}, this.$route.query, { brandSelected: this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString() : undefined })
+  //       });
+  //     }
+  //   },
+  //   showPrice: {
+  //     immediate: true,
+  //     handler() {
+  //       let rangeValue = undefined;
+  //       this.categoryActive.forEach((element) => {
+  //         rangeValue = element.priceRang.toString().replaceAll(",", "--");
+  //       });
+  //       this.$router.push({
+  //         path: "/",
+  //         query: { priceRang: this.categorySelected.length > 0 && this.showPrice ? rangeValue : undefined }
+  //       });
+  //     }
+  //   }
+  // },
   computed: {
     sellerTypeActive() {
       return this.sellers.filter(item => item.status === true);
@@ -142,41 +224,49 @@ export default {
         rangeValue = element.priceRang.toString().replaceAll(",", "--");
       });
 
-      // const paramsProductName = this.productName.length > 0 ? "productName~" + this.productName : undefined;
-      // const paramsSellerType = this.sellerType.length > 0 ? "sellerType~" + this.sellerType.toString().replaceAll(",", "--") : undefined;
-      // const paramsProductStatus = this.productStatus === true ? "productStatus~" + this.productStatus : undefined;
-      // const paramsSellerTypeActiveSelected = this.sellerTypeActiveSelected.length > 0 && this.sellerTypeActiveSelected !== "All" ? "sellerTypeActiveSelected~" + this.sellerTypeActiveSelected : undefined;
-      // const paramsCategorySelected = this.categorySelected.length > 0 ? "categorySelected~" + this.categorySelected : undefined;
-      // const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? "brandSelected~" + this.brandSelected.toString().replaceAll(",", "--") : undefined;
-      // const paramsPriceRang = this.categorySelected.length > 0 ? "priceRang~" + rangeValue : undefined;
-
       const paramsProductName = this.productName.length > 0 ? this.productName : undefined;
-      const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString().replaceAll(",", "--") : undefined;
+      const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString() : undefined;
+      // const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString().replaceAll(",", "--") : undefined;
       const paramsProductStatus = this.productStatus === true ? this.productStatus : undefined;
       const paramsSellerTypeActiveSelected = this.sellerTypeActiveSelected.length > 0 && this.sellerTypeActiveSelected !== "All" ? this.sellerTypeActiveSelected : undefined;
       const paramsCategorySelected = this.categorySelected.length > 0 ? this.categorySelected : undefined;
-      const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString().replaceAll(",", "--") : undefined;
-      const paramsPriceRang = this.categorySelected.length > 0 ? rangeValue : undefined;
+      const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString() : undefined;
+      // const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString().replaceAll(",", "--") : undefined;
+      const paramsPriceRang = this.categorySelected.length > 0 && this.showPrice ? rangeValue : undefined;
 
 
-      this.$router.replace({
-        query: {
-          productName: paramsProductName,
-          sellerType: paramsSellerType,
-          productStatus: paramsProductStatus,
-          sellerTypeActiveSelected: paramsSellerTypeActiveSelected,
-          categorySelected: paramsCategorySelected,
-          brandSelected: paramsBrandSelected,
-          priceRang: paramsPriceRang
-        }
-      });
-
-      // window.location.href = history.state.current.replaceAll("&", "+").replaceAll("=", "~");
+      // this.$router.replace({
+      //   query: {
+      //     productName: paramsProductName,
+      //     sellerType: paramsSellerType,
+      //     productStatus: paramsProductStatus,
+      //     sellerTypeActiveSelected: paramsSellerTypeActiveSelected,
+      //     categorySelected: paramsCategorySelected,
+      //     brandSelected: paramsBrandSelected,
+      //     priceRang: paramsPriceRang
+      //   }
+      // });
 
       return this.$route.query;
-    }
+    },
   },
   methods: {
+    addParamsToLocation() {
+      let params = { "productName": "asdasd", "sellerType": "selectedSeller", "productStatus": "true", "sellerTypeActiveSelected": "digiKalaSeller" }
+      history.pushState(
+        {},
+        null,
+        this.$route.path +
+        "?" +
+        Object.keys(params)
+          .map(key => {
+            return (
+              encodeURIComponent(key) + "=" + encodeURIComponent(params[key])
+            );
+          })
+          .join("&")
+      );
+    },
     showBrand(index) {
       this.categoryDetail = true;
       this.category.forEach(item => item.status = false);
@@ -189,6 +279,9 @@ export default {
     clearCategory() {
       this.brandSelected = [];
       this.category.filter(item => item.priceRang = [0, 100]);
+    },
+    clearSellerType(id) {
+      this.sellerType.splice(id, 1);
     },
     clearFilter(filterName) {
       switch (filterName) {
@@ -205,12 +298,14 @@ export default {
         case "categorySelected":
           this.categorySelected = "";
           this.categoryDetail = false;
+          this.showPrice = false;
           break;
         case "brandSelected":
           this.brandSelected = [];
           break;
         case "priceRang":
           this.category.filter(item => item.priceRang = [0, 100]);
+          this.showPrice = false;
           break;
       }
     },
@@ -228,7 +323,8 @@ export default {
       this.productName = this.$route.query.productName;
     }
     if (this.$route.query.sellerType !== undefined) {
-      this.sellerType = this.$route.query.sellerType.split("--");
+      // this.sellerType = this.$route.query.sellerType.split("--");
+      this.sellerType = this.$route.query.sellerType.split(",");
     }
     if (this.$route.query.productStatus !== undefined) {
       this.productStatus = true;
@@ -243,21 +339,24 @@ export default {
       this.showBrand(index);
     }
     if (this.$route.query.brandSelected !== undefined && this.$route.query.categorySelected !== undefined) {
-      this.brandSelected = this.$route.query.brandSelected.split("--");
+      // this.brandSelected = this.$route.query.brandSelected.split("--");
+      this.brandSelected = this.$route.query.brandSelected.split(",");
     }
     if (this.$route.query.priceRang !== undefined && this.$route.query.categorySelected !== undefined) {
+      this.showPrice = true;
       this.category[index].priceRang = this.$route.query.priceRang.split("--").map(Number);
     }
   },
   updated() {
+    // console.log(location.search);
   }
 };
 </script>
 
 <template>
   <div class="container theForms">
-    <div class="row">
 
+    <div class="row">
       <div class="col-12 mb-3" v-if="Object.keys(myQuery).length !== 0 && myQuery.constructor === Object">
         <div class="alert alert-success text-end" role="alert" dir="ltr">
           {{ myQuery }}
@@ -303,17 +402,19 @@ export default {
               <label class="form-check-label" for="productStatus" @click="clearBrands">فقط کالاهای موجود</label>
             </div>
             <Transition>
-              <div class="card position-relative mt-4 bg-light" v-show="productStatus">
-                <div class="card-body pt-4">
+              <slotCard customClass="true" v-show="productStatus">
+                <template v-slot:title>
                   <p class="title">انبارهای فعال</p>
+                </template>
+                <template v-slot:inputData>
                   <select class="form-select" v-model="sellerTypeActiveSelected">
                     <option selected value="All">همه</option>
                     <option v-for="(item, index) in sellerTypeActive" :key="index" :value="item.enName">
                       {{ item.name }}
                     </option>
                   </select>
-                </div>
-              </div>
+                </template>
+              </slotCard>
             </Transition>
           </template>
         </slotCard>
@@ -333,9 +434,11 @@ export default {
             </select>
             <Transition>
               <section v-show="categoryDetail">
-                <div class="card mb-4 position-relative mt-4 bg-light">
-                  <div class="card-body pt-4">
+                <slotCard customClass="true">
+                  <template v-slot:title>
                     <p class="title">برند</p>
+                  </template>
+                  <template v-slot:inputData>
                     <div v-for="(item, index) in categoryActive" :key="index">
                       <div class="form-check form-check-inline" v-for="(brand, index) in item.brands" :key="index">
                         <input class="form-check-input" type="checkbox" :id="brand.enName" :value="brand.enName"
@@ -343,17 +446,18 @@ export default {
                         <label class="form-check-label" :for="brand.enName">{{ brand.name }}</label>
                       </div>
                     </div>
-                  </div>
-                </div>
-                <div class="card position-relative mt-4 bg-light">
-                  <div class="card-body pt-5 mx-2">
+                  </template>
+                </slotCard>
+                <slotCard customClass="true">
+                  <template v-slot:title>
                     <p class="title">قیمت</p>
-                    <div v-for="(item, index) in categoryActive" :key="index">
-                      <Slider v-model="item.priceRang" />
+                  </template>
+                  <template v-slot:inputData>
+                    <div class="mt-4 mx-2" v-for="(item, index) in categoryActive" :key="index">
+                      <Slider v-model="item.priceRang" @change="showPrice = true" />
                     </div>
-                    <!--<div class="output">Data: {{ value }}</div>-->
-                  </div>
-                </div>
+                  </template>
+                </slotCard>
               </section>
             </Transition>
           </template>
@@ -379,13 +483,13 @@ export default {
                 <span class="d-inline-flex ms-1 mdi mdi-close"></span>
               </button>
               <!--Filter sellerType-->
-              <button v-if="sellerType.length !== 0" type="button" class="btn btn-success btn-sm me-2 my-1"
-                      @click="clearFilter('sellerType')">
+              <button v-if="sellerType.length !== 0" type="button" class="btn btn-success btn-sm me-2 my-1">
                 نوع فروشنده:
-                <span v-for="(item , index) in sellerType" :key="index"><small
-                  class="badge bg-light mx-1 text-dark">{{ item
-                  }}</small></span>
-                <span class="d-inline-flex ms-1 mdi mdi-close"></span>
+                <span v-for="(item , index) in sellerType" :key="index">
+                  <small class="badge bg-light mx-1 text-dark">{{ item }} <span class="d-inline-flex ms-1 mdi mdi-close"
+                                                                                @click="clearSellerType(index)"></span></small>
+                </span>
+                <span class="d-inline-flex ms-1 mdi mdi-close" @click.self="clearFilter('sellerType')"></span>
               </button>
               <!--Filter productStatus-->
               <button v-if="productStatus" type="button" class="btn btn-success btn-sm me-2 my-1"
@@ -394,7 +498,8 @@ export default {
                 <span class="d-inline-flex ms-1 mdi mdi-close"></span>
               </button>
               <!--Filter sellerTypeActiveSelected-->
-              <button v-if="productStatus && sellerTypeActiveSelected.length > 0" type="button"
+              <button v-if="productStatus && sellerTypeActiveSelected.length > 0 && sellerTypeActiveSelected !== 'All'"
+                      type="button"
                       class="btn btn-success btn-sm me-2 my-1" @click="clearFilter('productStatus')">
                 در انبار:
                 <span><small class="badge bg-light mx-1 text-dark">{{ sellerTypeActiveSelected }}</small></span>
@@ -416,11 +521,11 @@ export default {
                 <span class="d-inline-flex ms-1 mdi mdi-close"></span>
               </button>
               <!--Filter priceRang-->
-              <button v-if="categorySelected.length > 0 && categoryActive.length > 0" type="button"
-                      class="btn btn-success btn-sm me-2 my-1" @click="clearFilter('priceRang')">
-                قیمت:
-                <span v-for="(item , index) in categoryActive" :key="index" dir="ltr"><small
-                  class="badge bg-light mx-1 text-dark text-end">{{ item.priceRang }}</small></span>
+              <button v-if="categorySelected.length > 0 && categoryActive.length > 0 && showPrice" type="button"
+                      class="btn btn-success btn-sm me-2 my-1" @click="clearFilter('priceRang')">قیمت:
+                <span v-for="(item , index) in categoryActive" :key="index" dir="ltr">
+                  <small class="badge bg-light mx-1 text-dark text-end">{{ item.priceRang }}</small>
+                </span>
                 <span class="d-inline-flex ms-1 mdi mdi-close"></span>
               </button>
             </template>

@@ -1,6 +1,6 @@
 <template>
-  <div class="card mb-4 position-relative">
-    <div class="card-body pt-4">
+  <div class="card position-relative bg-light" :class="{'mt-4' : customClass , 'mb-4' : !customClass }">
+    <div class="card-body pt-4" :class="{'bg-white' : customClass}">
       <slot name="title"></slot>
       <slot name="inputData"></slot>
     </div>
@@ -10,6 +10,7 @@
 <script>
 export default {
   name: "slotCard",
+  props: ['customClass']
 };
 </script>
 

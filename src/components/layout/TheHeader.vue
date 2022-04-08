@@ -2,7 +2,7 @@
   <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">آویژه</a>
+        <RouterLink class="navbar-brand" to="/">آویژه</RouterLink>
         <button
           class="navbar-toggler"
           type="button"
