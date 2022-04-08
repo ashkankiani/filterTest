@@ -1,0 +1,25 @@
+.theForms p.title {
+  position: absolute;
+  top: -13px;
+  right: 20px;
+  min-width: 60px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, .125);
+  border-radius: .25rem;
+  padding: 0 5px;
+  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}

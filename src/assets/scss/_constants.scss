@@ -1,0 +1,272 @@
+html,
+body {
+  font-family: iransansx;
+  height: 100%;
+  text-align: right;
+}
+body {
+  font-size: $normal-font-size;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+p {
+  font-size: $normal-font-size;
+  font-weight: 300;
+  line-height: 2;
+  color: $color-primary-body;
+}
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+}
+
+#MainContent {
+  flex: 1;
+  background-color: white;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+#Footer {
+  p {
+    font-size: $normal-font-size - 1px;
+    font-weight: 200;
+  }
+}
+
+/* ====================================>>
+    Bootstrap Elements
+   ====================================>> */
+* {
+  outline: none;
+  font-family: iransansx;
+}
+
+a {
+  color: $color-primary-body;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+  color: $color-primary-body;
+}
+
+a:visited {
+  //color: $color-primary-1;
+}
+
+/* ====================================>>
+    CSS Elements
+   ====================================>> */
+.wrapper-text {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    display: block;
+    line-height: 32px;
+  }
+  h1 {
+    font-size: $normal-font-size + 8;
+    font-weight: bold;
+  }
+  h2 {
+    font-size: $normal-font-size + 7;
+    font-weight: 500;
+  }
+  h3 {
+    font-size: $normal-font-size + 6;
+  }
+  h4 {
+    font-size: $normal-font-size + 5;
+  }
+  h5 {
+    font-size: $normal-font-size + 4;
+  }
+  h6 {
+    font-size: $normal-font-size + 3;
+  }
+  p {
+    font-size: $normal-font-size + 2;
+    a {
+      font-weight: 500;
+    }
+    strong {
+      color: #303030;
+    }
+    span[style*="text-decoration:underline"] {
+      border-bottom: solid 1px $color-primary-4;
+      display: inline;
+      padding-bottom: 3px;
+      text-decoration: none !important;
+    }
+  }
+  a {
+    color: $color-primary-2;
+    :hover {
+      color: $color-primary-4;
+    }
+  }
+  ul,
+  ol {
+    display: block;
+    margin: 0 25px 1rem 0;
+    padding: 0;
+    li {
+      position: relative;
+      margin: 0 auto 5px;
+      line-height: normal;
+      padding: 2px 4px;
+      p {
+        font-size: inherit;
+        color: inherit;
+        margin-bottom: 0;
+        line-height: inherit;
+      }
+    }
+  }
+
+  @media (max-width: 575px) {
+    h1 {
+      font-size: $normal-font-size + 3;
+    }
+    h2 {
+      font-size: $normal-font-size + 2;
+    }
+    h3 {
+      font-size: $normal-font-size + 1;
+    }
+    h4 {
+      font-size: $normal-font-size;
+    }
+    h5 {
+      font-size: $normal-font-size - 1;
+    }
+    h6 {
+      font-size: $normal-font-size - 2;
+    }
+    p {
+      font-size: $normal-font-size - 1;
+    }
+  }
+}
+
+.wrapper-text-sm {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    display: block;
+    line-height: 28px;
+  }
+  h1 {
+    font-size: $normal-font-size + 4;
+    font-weight: bold;
+    margin-bottom: 7px;
+    color: #252525;
+  }
+  h2 {
+    font-size: $normal-font-size + 3;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #282828;
+  }
+  h3 {
+    font-size: $normal-font-size + 2;
+    color: #323232;
+  }
+  h4 {
+    font-size: $normal-font-size + 1;
+    font-weight: normal;
+    color: #363636;
+  }
+  h5 {
+    font-size: $normal-font-size;
+    font-weight: 300;
+    color: #393939;
+  }
+  h6 {
+    font-size: $normal-font-size - 1;
+    font-weight: 200;
+    color: #404040;
+  }
+  p {
+    font-size: $normal-font-size;
+    font-weight: 300;
+    color: #454545;
+    margin-bottom: 1rem;
+    a {
+      font-weight: 500;
+    }
+    strong {
+      color: #404040;
+    }
+    span[style*="text-decoration:underline"] {
+      border-bottom: solid 1px $color-primary-4;
+      display: inline;
+      padding-bottom: 3px;
+      text-decoration: none !important;
+    }
+  }
+  a {
+    color: $color-primary-2;
+    :hover {
+      color: $color-primary-4;
+    }
+  }
+  ul,
+  ol {
+    display: block;
+    margin: 10px 25px 10px 0;
+    padding: 0;
+    li {
+      position: relative;
+      margin: 0 auto 5px;
+      line-height: normal;
+      padding: 2px 4px;
+      color: #454545;
+      p {
+        font-size: inherit;
+        color: inherit;
+        margin-bottom: 0;
+        margin-top: 0;
+        line-height: inherit;
+      }
+    }
+  }
+
+  @media (max-width: 575px) {
+    h1 {
+      font-size: $normal-font-size + 2;
+    }
+    h2 {
+      font-size: $normal-font-size + 1;
+    }
+    h3 {
+      font-size: $normal-font-size;
+    }
+    h4 {
+      font-size: $normal-font-size;
+    }
+    h5 {
+      font-size: $normal-font-size;
+    }
+    h6 {
+      font-size: $normal-font-size;
+    }
+    p {
+      font-size: $normal-font-size - 1;
+    }
+  }
+}
