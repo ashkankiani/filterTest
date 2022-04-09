@@ -127,26 +127,48 @@ export default {
       priceValue: "",
       categorySelected: "",
       brandSelected: [],
-      categoryDetail: false
+      categoryDetail: false,
+      // oldProductName: "",
+      // oldSellerType: [],
+      // oldProductStatus: false,
+      // oldSellerTypeActiveSelected: "All",
+      // oldCategorySelected: "",
+      // oldBrandSelected: [],
+      // oldPriceValue: "",
+
     };
   },
   watch: {
     productName: {
       immediate: true,
       handler(newVal) {
-        this.$router.push({
-          path: "/",
-          query: Object.assign({}, this.$route.query, {productName: newVal.length > 0 ? newVal : undefined})
-        });
+        if (newVal !== '' && newVal !== undefined) {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {productName: newVal.length > 0 ? newVal : undefined})
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {productName: undefined})
+          });
+        }
       }
     },
     sellerType: {
       deep: true,
       handler(newVal) {
-        this.$router.push({
-          path: "/",
-          query: Object.assign({}, this.$route.query, {sellerType: newVal.length > 0 ? newVal.toString().replaceAll(",", "--") : undefined})
-        });
+        if (newVal !== '' && newVal !== undefined) {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {sellerType: newVal.length > 0 ? newVal.toString().replaceAll(",", "--") : undefined})
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {sellerType: undefined})
+          });
+        }
       }
     },
     productStatus: {
@@ -234,6 +256,122 @@ export default {
         }
       }
     },
+    // "$route.query": {
+    //   immediate: true,
+    //   deep: true,
+    //   handler(newVal, oldVal) {
+    //     let paramsChangeProductName, paramsChangeSellerType, paramsChangeProductStatus,
+    //         paramsChangeSellerTypeActiveSelected, paramsChangeCategorySelected, paramsChangeBrandSelected,
+    //         paramsChangePriceValue
+    //     // if (oldVal.productName !== undefined) {
+    //     //   paramsChangeProductName = oldVal.productName
+    //     // }
+    //     // if (oldVal.sellerType !== undefined) {
+    //     //   paramsChangeSellerType = oldVal.sellerType
+    //     // }
+    //     // paramsChangeProductStatus = oldVal.productStatus
+    //     // paramsChangeSellerTypeActiveSelected = oldVal.sellerTypeActiveSelected
+    //     // paramsChangeCategorySelected = oldVal.categorySelected
+    //     // paramsChangeBrandSelected = oldVal.brandSelected
+    //     // paramsChangePriceValue = oldVal.priceRang
+    //     //
+    //     // console.log(paramsChangeProductName)
+    //     // console.log(paramsChangeSellerType)
+    //     // console.log(paramsChangeProductStatus)
+    //     // console.log(paramsChangeSellerTypeActiveSelected)
+    //     // console.log(paramsChangeCategorySelected)
+    //     // console.log(paramsChangeBrandSelected)
+    //     // console.log(paramsChangePriceValue)
+    //
+    //     // console.log(this.$route.from.fullPath)
+    //     // if (oldVal !== undefined) {
+    //     //   if (newVal.productName !== oldVal.productName) {
+    //     //     this.productName = oldVal.productName
+    //     //   }
+    //     // }
+    //
+    //     // if (this.$route.query.productName !== '') {
+    //     //   this.productName = oldVal.productName || ''
+    //     // }
+    //     // if (this.$route.query.sellerType !== undefined) {
+    //     //   this.sellerType = this.$route.query.sellerType.split("--")
+    //     // }
+    //     // this.productStatus = this.$route.query.productStatus
+    //   }
+    //
+    //   // if (this.$route.query.productName && value.productName !== '') {
+    //   //   this.productName = value.productName || ''
+    //   // }
+    //   // if (value.sellerType !== undefined && value.sellerType.length > 0) {
+    //   //   this.sellerType = value.sellerType.split("--") || []
+    //   //   console.log(this.sellerType)
+    //   // }
+    // },
+    // "$route.query.productName": {
+    //   handler(newVal, oldVal) {
+    //     if (oldVal !== undefined) {
+    //       this.oldProductName = oldVal
+    //       console.log(this.oldProductName)
+    //     }
+    //   }
+    // },
+    // "$route.query.sellerType": {
+    //   handler(newVal, oldVal) {
+    //     if (oldVal !== undefined) {
+    //       this.oldSellerType = oldVal
+    //       console.log(this.oldSellerType)
+    //     }
+    //   }
+    // },
+    // "$route.query.productStatus": {
+    //   handler(newVal, oldVal) {
+    //     if (oldVal !== undefined) {
+    //       this.oldProductStatus = oldVal
+    //       console.log(this.oldProductStatus)
+    //     }
+    //   }
+    // },
+    // "$route.query.sellerTypeActiveSelected": {
+    //   handler(newVal, oldVal) {
+    //     if (oldVal !== undefined) {
+    //       this.oldSellerTypeActiveSelected = oldVal
+    //       console.log(this.oldSellerTypeActiveSelected)
+    //     }
+    //   }
+    // },
+    // "$route.query.categorySelected": {
+    //   handler(newVal, oldVal) {
+    //     if (oldVal !== undefined) {
+    //       this.oldCategorySelected = oldVal
+    //       console.log(this.oldCategorySelected)
+    //     }
+    //   }
+    // },
+    // "$route.query.brandSelected": {
+    //   handler(newVal, oldVal) {
+    //     if (oldVal !== undefined) {
+    //       this.oldBrandSelected = oldVal
+    //       console.log(this.oldBrandSelected)
+    //     }
+    //   }
+    // },
+    // "$route.query.priceRang": {
+    //   handler(newVal, oldVal) {
+    //     if (oldVal !== undefined) {
+    //       this.oldPriceValue = oldVal
+    //       console.log(this.oldPriceValue)
+    //     }
+    //   }
+    // },
+    // '$route.query': {
+    //   immediate: true,
+    //   handler(newVal, oldVal) {
+    //     // this.$router.replace({name: "home", query: oldVal})
+    //     // console.log(oldVal)
+    //     // console.log(newVal)
+    //     // make actions with newVal.page
+    //   }
+    // }
   },
   computed: {
     sellerTypeActive() {
@@ -247,29 +385,9 @@ export default {
         this.priceValue = element.priceRang.toString().replaceAll(",", "--");
       });
       return this.$route.query;
-    }
+    },
   },
   methods: {
-    // addParamsToLocation(params) {
-    //   Object.keys(params).forEach(key => {
-    //     if (params[key] === undefined) {
-    //       delete params[key];
-    //     }
-    //   });
-    //   history.pushState(
-    //       {},
-    //       null,
-    //       this.$route.path +
-    //       "#" +
-    //       Object.keys(params)
-    //           .map(key => {
-    //             return (
-    //                 encodeURIComponent(key) + "~" + encodeURIComponent(params[key])
-    //             );
-    //           })
-    //           .join("+")
-    //   );
-    // },
     showBrand(index) {
       this.categoryDetail = true;
       this.category.forEach(item => item.status = false);
@@ -293,7 +411,6 @@ export default {
           break;
         case "sellerType":
           this.sellerType = [];
-
           break;
         case "productStatus":
           this.productStatus = false;
@@ -358,6 +475,23 @@ export default {
       this.showPrice = true;
       this.category[index].priceRang = this.$route.query.priceRang.split("--").map(Number);
     }
+  },
+  updated() {
+    // if (this.productName !== undefined) {
+    //   this.productName = this.$route.query.productName
+    // }
+    // if(this.$route.query.sellerType.length > 0){
+    // console.log(1111)
+    //
+    //
+    // }
+    // if (this.sellerType !== undefined) {
+    //   // this.sellerType = []
+    //   // this.sellerType = this.$route.query.sellerType.split("--")
+    // }
+    // if(this.oldProductName !== this.$route.query.productName){
+    //   this.productName = this.oldProductName
+    // }
   }
 };
 </script>
@@ -484,7 +618,7 @@ export default {
             </template>
             <template v-slot:inputData>
               <!--Filter productName-->
-              <button v-if="productName !== '' && productName !== null" type="button"
+              <button v-if="productName !== '' && productName !== undefined" type="button"
                       class="btn btn-success btn-sm me-2 my-1" @click="clearFilter('productName')">
                 نام کالا:
                 <span><small class="badge bg-light mx-1 text-dark">{{ productName }}</small></span>
