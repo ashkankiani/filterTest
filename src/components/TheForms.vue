@@ -1,5 +1,4 @@
 <script>
-import queryString from "query-string";
 import Slider from "@vueform/slider";
 import slotCard from "@/components/slot/slotCard.vue";
 import slotCardHeader from "@/components/slot/slotCardHeader.vue";
@@ -125,92 +124,117 @@ export default {
         }
       ],
       showPrice: false,
+      priceValue: "",
       categorySelected: "",
       brandSelected: [],
       categoryDetail: false
     };
   },
-  // watch: {
-  //   productName: {
-  //     immediate: true,
-  //     handler() {
-  //       this.$router.push({
-  //         path: "/",
-  //         query: Object.assign({}, this.$route.query, { productName: this.productName.length > 0 ? this.productName : undefined })
-  //       });
-  //     }
-  //   },
-  //   sellerType: {
-  //     immediate: true,
-  //     handler() {
-  //       this.$router.push({
-  //         path: "/",
-  //         query: Object.assign({}, this.$route.query, { sellerType: this.sellerType.length > 0 ? this.sellerType.toString() : undefined })
-  //       });
-  //     }
-  //   },
-  //   productStatus: {
-  //     immediate: true,
-  //     handler(newVal) {
-  //       if (newVal === false) {
-  //         this.$router.push({
-  //           path: "/",
-  //           query: Object.assign({}, this.$route.query, {
-  //             productStatus: undefined
-  //           }, {
-  //             sellerTypeActiveSelected: undefined
-  //           })
-  //         });
-  //       } else {
-  //         this.$router.push({
-  //           path: "/",
-  //           query: Object.assign({}, this.$route.query, { productStatus: this.productStatus === true ? this.productStatus : undefined })
-  //         });
-  //       }
-  //     }
-  //   },
-  //   sellerTypeActiveSelected: {
-  //     immediate: true,
-  //     handler() {
-  //       this.$router.push({
-  //         path: "/",
-  //         query: Object.assign({}, this.$route.query, { sellerTypeActiveSelected: this.sellerTypeActiveSelected.length > 0 && this.sellerTypeActiveSelected !== "All" ? this.sellerTypeActiveSelected : undefined })
-  //       });
-  //     }
-  //   },
-  //   categorySelected: {
-  //     immediate: true,
-  //     handler() {
-  //       console.log(this.categorySelected);
-  //       this.$router.push({
-  //         path: "/",
-  //         query: { categorySelected: this.categorySelected.length > 0 ? this.categorySelected : undefined }
-  //       });
-  //     }
-  //   },
-  //   brandSelected: {
-  //     immediate: true,
-  //     handler() {
-  //       this.$router.push({
-  //         path: "/",
-  //         query: Object.assign({}, this.$route.query, { brandSelected: this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString() : undefined })
-  //       });
-  //     }
-  //   },
-  //   showPrice: {
-  //     immediate: true,
-  //     handler() {
-  //       let rangeValue = undefined;
-  //       this.categoryActive.forEach((element) => {
-  //         rangeValue = element.priceRang.toString().replaceAll(",", "--");
-  //       });
-  //       this.$router.push({
-  //         path: "/",
-  //         query: { priceRang: this.categorySelected.length > 0 && this.showPrice ? rangeValue : undefined }
-  //       });
-  //     }
-  //   }
-  // },
+  watch: {
+    productName: {
+      immediate: true,
+      handler(newVal) {
+        this.$router.push({
+          path: "/",
+          query: Object.assign({}, this.$route.query, {productName: newVal.length > 0 ? newVal : undefined})
+        });
+      }
+    },
+    sellerType: {
+      deep: true,
+      handler(newVal) {
+        this.$router.push({
+          path: "/",
+          query: Object.assign({}, this.$route.query, {sellerType: newVal.length > 0 ? newVal.toString().replaceAll(",", "--") : undefined})
+        });
+      }
+    },
+    productStatus: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal === false) {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {
+              productStatus: undefined
+            }, {
+              sellerTypeActiveSelected: undefined
+            })
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {productStatus: newVal === true ? newVal : undefined})
+          });
+        }
+      }
+    },
+    sellerTypeActiveSelected: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal === "All") {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {
+              productStatus: undefined
+            }, {
+              sellerTypeActiveSelected: undefined
+            })
+          });
+        } else {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query, {sellerTypeActiveSelected: newVal.length > 0 && newVal !== "All" ? newVal : undefined})
+          });
+        }
+      }
+    },
+    categorySelected: {
+      immediate: true,
+      handler(newVal) {
+        this.$router.push({
+          path: "/",
+          query: Object.assign({}, this.$route.query, {categorySelected: newVal.length > 0 ? newVal : undefined},
+              {brandSelected: undefined}
+          )
+        });
+      }
+    },
+    brandSelected: {
+      immediate: true,
+      handler(newVal) {
+        this.$router.push({
+          path: "/",
+          query: Object.assign({}, this.$route.query,
+              {categorySelected: this.categorySelected.length > 0 ? this.categorySelected : undefined},
+              {brandSelected: newVal.length > 0 && this.categorySelected.length > 0 ? newVal.toString().replaceAll(",", "--") : undefined}
+          )
+        });
+      }
+    },
+    priceValue: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal !== '' && newVal !== '0--100') {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query,
+                {priceRang: newVal},
+            )
+          });
+        } else if (newVal === '0--100') {
+          this.$router.push({
+            path: "/",
+            query: Object.assign({}, this.$route.query,
+                {priceRang: undefined},
+                {categorySelected: this.categorySelected.length > 0 ? this.categorySelected : undefined},
+                {brandSelected: this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString().replaceAll(",", "--") : undefined}
+            )
+          });
+        }
+      }
+    },
+  },
   computed: {
     sellerTypeActive() {
       return this.sellers.filter(item => item.status === true);
@@ -219,76 +243,33 @@ export default {
       return this.category.filter(item => item.status === true);
     },
     myQuery() {
-      let rangeValue = undefined;
       this.categoryActive.forEach((element) => {
-        rangeValue = element.priceRang.toString().replaceAll(",", "--");
+        this.priceValue = element.priceRang.toString().replaceAll(",", "--");
       });
-
-      const paramsProductName = this.productName.length > 0 ? this.productName : undefined;
-      // const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString() : undefined;
-      const paramsSellerType = this.sellerType.length > 0 ? this.sellerType.toString().replaceAll(",", "--") : undefined;
-      const paramsProductStatus = this.productStatus === true ? this.productStatus : undefined;
-      const paramsSellerTypeActiveSelected = this.sellerTypeActiveSelected.length > 0 && this.sellerTypeActiveSelected !== "All" ? this.sellerTypeActiveSelected : undefined;
-      const paramsCategorySelected = this.categorySelected.length > 0 ? this.categorySelected : undefined;
-      // const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString() : undefined;
-      const paramsBrandSelected = this.brandSelected.length > 0 && this.categorySelected.length > 0 ? this.brandSelected.toString().replaceAll(",", "--") : undefined;
-      const paramsPriceRang = this.categorySelected.length > 0 && this.showPrice ? rangeValue : undefined;
-
-
-
-
-      const query = {
-        productName: paramsProductName,
-        sellerType: paramsSellerType,
-        productStatus: paramsProductStatus,
-        sellerTypeActiveSelected: paramsSellerTypeActiveSelected,
-        categorySelected: paramsCategorySelected,
-        brandSelected: paramsBrandSelected,
-        priceRang: paramsPriceRang
-      };
-
-      // this.$router.replace({
-      //   query: {
-      //     productName: paramsProductName,
-      //     sellerType: paramsSellerType,
-      //     productStatus: paramsProductStatus,
-      //     sellerTypeActiveSelected: paramsSellerTypeActiveSelected,
-      //     categorySelected: paramsCategorySelected,
-      //     brandSelected: paramsBrandSelected,
-      //     priceRang: paramsPriceRang
-      //   }
-      // });
-      // this.addParamsToLocation(query);
       return this.$route.query;
     }
   },
   methods: {
-    asdasdasd(){
-      queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'});
-      console.log(queryString.stringify({foo: [1, 2, 3]}, {arrayFormat: 'bracket'}))
-    },
-    addParamsToLocation(params) {
-
-      Object.keys(params).forEach(key => {
-        if (params[key] === undefined) {
-          delete params[key];
-        }
-      });
-
-      history.pushState(
-        {},
-        null,
-        this.$route.path +
-        "?" +
-        Object.keys(params)
-          .map(key => {
-            return (
-              encodeURIComponent(key) + "~" + encodeURIComponent(params[key])
-            );
-          })
-          .join("+")
-      );
-    },
+    // addParamsToLocation(params) {
+    //   Object.keys(params).forEach(key => {
+    //     if (params[key] === undefined) {
+    //       delete params[key];
+    //     }
+    //   });
+    //   history.pushState(
+    //       {},
+    //       null,
+    //       this.$route.path +
+    //       "#" +
+    //       Object.keys(params)
+    //           .map(key => {
+    //             return (
+    //                 encodeURIComponent(key) + "~" + encodeURIComponent(params[key])
+    //             );
+    //           })
+    //           .join("+")
+    //   );
+    // },
     showBrand(index) {
       this.categoryDetail = true;
       this.category.forEach(item => item.status = false);
@@ -312,6 +293,7 @@ export default {
           break;
         case "sellerType":
           this.sellerType = [];
+
           break;
         case "productStatus":
           this.productStatus = false;
@@ -338,6 +320,14 @@ export default {
       this.clearFilter("categorySelected");
       this.clearFilter("brandSelected");
       this.clearFilter("priceRang");
+      delete this.$route.query.productName
+      delete this.$route.query.sellerType
+      delete this.$route.query.productStatus
+      delete this.$route.query.sellerTypeActiveSelected
+      delete this.$route.query.categorySelected
+      delete this.$route.query.brandSelected
+      delete this.$route.query.priceRang
+      window.history.pushState({}, document.title, "/");
     }
   },
   mounted() {
@@ -345,8 +335,8 @@ export default {
       this.productName = this.$route.query.productName;
     }
     if (this.$route.query.sellerType !== undefined) {
-      // this.sellerType = this.$route.query.sellerType.split("--");
-      this.sellerType = this.$route.query.sellerType.split(",");
+      this.sellerType = this.$route.query.sellerType.split("--");
+      // this.sellerType = this.$route.query.sellerType.split(",");
     }
     if (this.$route.query.productStatus !== undefined) {
       this.productStatus = true;
@@ -361,23 +351,19 @@ export default {
       this.showBrand(index);
     }
     if (this.$route.query.brandSelected !== undefined && this.$route.query.categorySelected !== undefined) {
-      // this.brandSelected = this.$route.query.brandSelected.split("--");
-      this.brandSelected = this.$route.query.brandSelected.split(",");
+      this.brandSelected = this.$route.query.brandSelected.split("--");
+      // this.brandSelected = this.$route.query.brandSelected.split(",");
     }
     if (this.$route.query.priceRang !== undefined && this.$route.query.categorySelected !== undefined) {
       this.showPrice = true;
       this.category[index].priceRang = this.$route.query.priceRang.split("--").map(Number);
     }
-  },
-  updated() {
-    // console.log(location.search);
   }
 };
 </script>
 
 <template>
   <div class="container theForms">
-    <h1 @click="asdasdasd">asdasdasd</h1>
     <div class="row">
       <div class="col-12 mb-3" v-if="Object.keys(myQuery).length !== 0 && myQuery.constructor === Object">
         <div class="alert alert-success text-end" role="alert" dir="ltr">
@@ -476,7 +462,7 @@ export default {
                   </template>
                   <template v-slot:inputData>
                     <div class="mt-4 mx-2" v-for="(item, index) in categoryActive" :key="index">
-                      <Slider v-model="item.priceRang" @change="showPrice = true" />
+                      <Slider v-model="item.priceRang" @change="showPrice = true"/>
                     </div>
                   </template>
                 </slotCard>
@@ -539,7 +525,7 @@ export default {
                       class="btn btn-success btn-sm me-2 my-1" @click="clearFilter('brandSelected')">
                 برندهای:
                 <span v-for="(item , index) in brandSelected" :key="index"><small
-                  class="badge bg-light mx-1 text-dark">{{ item }}</small></span>
+                    class="badge bg-light mx-1 text-dark">{{ item }}</small></span>
                 <span class="d-inline-flex ms-1 mdi mdi-close"></span>
               </button>
               <!--Filter priceRang-->
@@ -561,7 +547,7 @@ export default {
             </template>
             <template v-slot:inputData>
               <button type="button" class="btn btn-danger btn-sm me-2" @click="clearAllFilter">پاک کردن همه<i
-                class="d-inline-flex ms-1 mdi mdi-check-all"></i></button>
+                  class="d-inline-flex ms-1 mdi mdi-check-all"></i></button>
             </template>
           </slotCardHeader>
           <!--End Operator Filters-->
